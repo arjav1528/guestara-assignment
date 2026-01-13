@@ -1,5 +1,4 @@
 import logger from '../utils/logger.js';
-import { Constants } from '../config/constants.js';
 import environment from '../config/environment.js';
 
 export const errorHandler = (err, req, res, _next) => {

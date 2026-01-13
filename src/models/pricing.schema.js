@@ -1,12 +1,10 @@
 import mongoose from 'mongoose';
 
-// Helper function to parse time string to minutes
 const parseTime = (timeString) => {
     const [hours, minutes] = timeString.split(':').map(Number);
     return hours * 60 + minutes;
 };
 
-// Pricing schema for embedded use in Item model
 export const pricingSchema = new mongoose.Schema(
     {
         type: {
@@ -17,7 +15,6 @@ export const pricingSchema = new mongoose.Schema(
                 message: 'Pricing type must be one of: static, tiered, complimentary, discounted, dynamic',
             },
         },
-        // For static pricing
         price: {
             type: Number,
             min: [0, 'Price cannot be negative'],
@@ -31,7 +28,6 @@ export const pricingSchema = new mongoose.Schema(
                 message: 'Price is required for static pricing',
             },
         },
-        // For tiered pricing
         tiers: {
             type: [
                 {
@@ -53,11 +49,10 @@ export const pricingSchema = new mongoose.Schema(
                         if (!value || value.length === 0) {
                             return false;
                         }
-                        // Check for overlapping tiers (sorted by max value)
                         const sorted = [...value].sort((a, b) => a.max - b.max);
                         for (let i = 1; i < sorted.length; i++) {
                             if (sorted[i].max <= sorted[i - 1].max) {
-                                return false; // Overlapping or invalid order
+                                return false;
                             }
                         }
                     }
@@ -66,7 +61,6 @@ export const pricingSchema = new mongoose.Schema(
                 message: 'Tiers are required for tiered pricing and must not overlap',
             },
         },
-        // For discounted pricing
         basePrice: {
             type: Number,
             min: [0, 'Base price cannot be negative'],
@@ -105,11 +99,9 @@ export const pricingSchema = new mongoose.Schema(
                         if (value === null || value === undefined) {
                             return false;
                         }
-                        // For percentage, ensure it's not more than 100
                         if (this.discountType === 'percentage' && value > 100) {
                             return false;
                         }
-                        // For flat, ensure it doesn't exceed base price
                         if (this.discountType === 'flat' && value > this.basePrice) {
                             return false;
                         }
@@ -118,8 +110,7 @@ export const pricingSchema = new mongoose.Schema(
                 },
                 message: 'Valid discount value is required for discounted pricing',
             },
-        },
-        // For dynamic pricing (time-based)
+        }, 
         timeWindows: {
             type: [
                 {
@@ -146,12 +137,11 @@ export const pricingSchema = new mongoose.Schema(
                         if (!value || value.length === 0) {
                             return false;
                         }
-                        // Validate time windows don't have invalid ranges
                         for (const window of value) {
                             const start = parseTime(window.start);
                             const end = parseTime(window.end);
                             if (start >= end) {
-                                return false; // Invalid time range
+                                return false;
                             }
                         }
                     }
@@ -162,6 +152,6 @@ export const pricingSchema = new mongoose.Schema(
         },
     },
     {
-        _id: false, // Embedded schema doesn't need _id
+        _id: false,
     },
 );

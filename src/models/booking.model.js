@@ -29,7 +29,6 @@ const bookingSchema = new mongoose.Schema(
             default: 'confirmed',
             index: true,
         },
-        // Optional: customer information
         customerName: {
             type: String,
             default: null,
@@ -48,7 +47,6 @@ const bookingSchema = new mongoose.Schema(
     },
 );
 
-// Compound index to prevent double booking (check for overlapping time slots)
 bookingSchema.index(
     { item: 1, startTime: 1, endTime: 1 },
     {
@@ -56,25 +54,21 @@ bookingSchema.index(
     },
 );
 
-// Validation: Prevent overlapping bookings for the same item
 bookingSchema.pre('save', async function (next) {
     if (this.status === 'confirmed') {
         const overlappingBooking = await mongoose.model('Booking').findOne({
             item: this.item,
             status: 'confirmed',
-            _id: { $ne: this._id }, // Exclude current booking if updating
+            _id: { $ne: this._id },
             $or: [
-                // New booking starts during existing booking
                 {
                     startTime: { $lte: this.startTime },
                     endTime: { $gt: this.startTime },
                 },
-                // New booking ends during existing booking
                 {
                     startTime: { $lt: this.endTime },
                     endTime: { $gte: this.endTime },
                 },
-                // New booking completely contains existing booking
                 {
                     startTime: { $gte: this.startTime },
                     endTime: { $lte: this.endTime },

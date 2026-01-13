@@ -26,7 +26,6 @@ const addonSchema = new mongoose.Schema(
             type: Boolean,
             default: false,
         },
-        // Optional: Addon groups (e.g., "Choose 1 of 3 sauces")
         group: {
             type: String,
             default: null,
@@ -43,7 +42,6 @@ const addonSchema = new mongoose.Schema(
     },
 );
 
-// Index to ensure unique addon name per item (unless in a group)
 addonSchema.index({ name: 1, item: 1 }, { unique: true });
 
 export const Addon = mongoose.model('Addon', addonSchema);

@@ -26,7 +26,6 @@ const categorySchema = new mongoose.Schema(
             max: [100, 'Tax percentage cannot exceed 100'],
             validate: {
                 validator: function (value) {
-                    // If tax_applicable is true, tax_percentage is required
                     if (this.tax_applicable && (value === null || value === undefined)) {
                         return false;
                     }
@@ -51,7 +50,6 @@ const categorySchema = new mongoose.Schema(
     },
 );
 
-// Compound index to ensure unique category name per restaurant
 categorySchema.index({ name: 1, restaurant_id: 1 }, { unique: true });
 
 export const Category = mongoose.model('Category', categorySchema);
