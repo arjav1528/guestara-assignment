@@ -5,7 +5,7 @@ import environment from '../config/environment.js';
 export const connectDatabase = async () => {
     try {
         await mongoose.connect(environment.mongoUri, {
-            dbName: 'express_app',
+            dbName: 'guestara',
         });
         logger.info('MongoDB connected successfully');
     } catch (err) {

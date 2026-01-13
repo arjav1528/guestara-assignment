@@ -6,7 +6,7 @@ const environment = {
     host: process.env.HOST || 'localhost',
     clientUrl: process.env.CLIENT_URL || 'http://localhost:3000',
     mongoUri:
-        process.env.MONGODB_URI || 'mongodb://localhost:27017/express_app',
+        process.env.MONGODB_URI || 'mongodb://localhost:27017/guestara',
     logLevel: process.env.LOG_LEVEL || 'info',
 };
 
