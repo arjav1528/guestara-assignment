@@ -16,8 +16,17 @@ app.use(morganMiddleware);
 
 app.use(helmet());
 app.use(compression());
+// max 100 requests per 15 minutes
 app.use(
-    rateLimit({ windowMs: 15 * 60 * 1000, max: 100, standardHeaders: true }),
+    rateLimit({
+        windowMs: 15 * 60 * 1000,
+        max: 100,
+        standardHeaders: true,
+        message: {
+            success: false,
+            error: 'Too many requests, please try again later.',
+        },
+    }),
 );
 
 app.use(cors({ origin: process.env.CLIENT_URL || '*', credentials: true }));
