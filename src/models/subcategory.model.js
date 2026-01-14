@@ -42,4 +42,6 @@ const subcategorySchema = new mongoose.Schema(
     },
 );
 
+subcategorySchema.index({ name: 1, category: 1 }, { unique: true });
+
 export const Subcategory = mongoose.model('Subcategory', subcategorySchema);
