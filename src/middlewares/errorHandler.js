@@ -1,5 +1,6 @@
 import logger from '../utils/logger.js';
 import environment from '../config/environment.js';
+import { Constants } from '../config/constants.js';
 
 export const errorHandler = (err, req, res, _next) => {
     const statusCode = err.statusCode || Constants.HTTP_STATUS.INTERNAL_ERROR;
