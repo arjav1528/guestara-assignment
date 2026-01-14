@@ -15,7 +15,12 @@ export const createCategory = async (req, res, next) => {
 
 export const getCategories = async (req, res, next) => {
     try {
-        const { page = 1, limit = 10, sort = 'createdAt', order = 'desc' } = req.query;
+        const {
+            page = 1,
+            limit = 10,
+            sort = 'createdAt',
+            order = 'desc',
+        } = req.query;
         const skip = (page - 1) * limit;
         const sortOrder = order === 'asc' ? 1 : -1;
 

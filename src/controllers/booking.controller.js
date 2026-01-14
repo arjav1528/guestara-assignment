@@ -22,7 +22,13 @@ export const getAvailableSlots = async (req, res, next) => {
 export const bookSlot = async (req, res, next) => {
     try {
         const { id } = req.params;
-        const { startTime, endTime, customerName, customerEmail, customerPhone } = req.body;
+        const {
+            startTime,
+            endTime,
+            customerName,
+            customerEmail,
+            customerPhone,
+        } = req.body;
 
         if (!startTime || !endTime) {
             return res.status(Constants.HTTP_STATUS.BAD_REQUEST).json({

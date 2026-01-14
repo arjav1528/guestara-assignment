@@ -11,8 +11,15 @@ export const pricingSchema = new mongoose.Schema(
             type: String,
             required: [true, 'Pricing type is required'],
             enum: {
-                values: ['static', 'tiered', 'complimentary', 'discounted', 'dynamic'],
-                message: 'Pricing type must be one of: static, tiered, complimentary, discounted, dynamic',
+                values: [
+                    'static',
+                    'tiered',
+                    'complimentary',
+                    'discounted',
+                    'dynamic',
+                ],
+                message:
+                    'Pricing type must be one of: static, tiered, complimentary, discounted, dynamic',
             },
         },
         price: {
@@ -20,7 +27,10 @@ export const pricingSchema = new mongoose.Schema(
             min: [0, 'Price cannot be negative'],
             validate: {
                 validator: function (value) {
-                    if (this.type === 'static' && (value === null || value === undefined)) {
+                    if (
+                        this.type === 'static' &&
+                        (value === null || value === undefined)
+                    ) {
                         return false;
                     }
                     return true;
@@ -58,7 +68,8 @@ export const pricingSchema = new mongoose.Schema(
                     }
                     return true;
                 },
-                message: 'Tiers are required for tiered pricing and must not overlap',
+                message:
+                    'Tiers are required for tiered pricing and must not overlap',
             },
         },
         basePrice: {
@@ -66,7 +77,10 @@ export const pricingSchema = new mongoose.Schema(
             min: [0, 'Base price cannot be negative'],
             validate: {
                 validator: function (value) {
-                    if (this.type === 'discounted' && (value === null || value === undefined)) {
+                    if (
+                        this.type === 'discounted' &&
+                        (value === null || value === undefined)
+                    ) {
                         return false;
                     }
                     return true;
@@ -102,27 +116,37 @@ export const pricingSchema = new mongoose.Schema(
                         if (this.discountType === 'percentage' && value > 100) {
                             return false;
                         }
-                        if (this.discountType === 'flat' && value > this.basePrice) {
+                        if (
+                            this.discountType === 'flat' &&
+                            value > this.basePrice
+                        ) {
                             return false;
                         }
                     }
                     return true;
                 },
-                message: 'Valid discount value is required for discounted pricing',
+                message:
+                    'Valid discount value is required for discounted pricing',
             },
-        }, 
+        },
         timeWindows: {
             type: [
                 {
                     start: {
                         type: String,
                         required: true,
-                        match: [/^([0-1][0-9]|2[0-3]):[0-5][0-9]$/, 'Time must be in HH:MM format'],
+                        match: [
+                            /^([0-1][0-9]|2[0-3]):[0-5][0-9]$/,
+                            'Time must be in HH:MM format',
+                        ],
                     },
                     end: {
                         type: String,
                         required: true,
-                        match: [/^([0-1][0-9]|2[0-3]):[0-5][0-9]$/, 'Time must be in HH:MM format'],
+                        match: [
+                            /^([0-1][0-9]|2[0-3]):[0-5][0-9]$/,
+                            'Time must be in HH:MM format',
+                        ],
                     },
                     price: {
                         type: Number,

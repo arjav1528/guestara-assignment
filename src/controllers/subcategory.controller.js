@@ -16,7 +16,13 @@ export const createSubcategory = async (req, res, next) => {
 
 export const getSubcategories = async (req, res, next) => {
     try {
-        const { page = 1, limit = 10, sort = 'createdAt', order = 'desc', category } = req.query;
+        const {
+            page = 1,
+            limit = 10,
+            sort = 'createdAt',
+            order = 'desc',
+            category,
+        } = req.query;
         const skip = (page - 1) * limit;
         const sortOrder = order === 'asc' ? 1 : -1;
 
@@ -48,7 +54,9 @@ export const getSubcategories = async (req, res, next) => {
 
 export const getSubcategoryById = async (req, res, next) => {
     try {
-        const subcategory = await Subcategory.findById(req.params.id).populate('category');
+        const subcategory = await Subcategory.findById(req.params.id).populate(
+            'category',
+        );
         if (!subcategory || !subcategory.is_active) {
             return res.status(Constants.HTTP_STATUS.NOT_FOUND).json({
                 success: false,

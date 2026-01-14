@@ -39,18 +39,32 @@ const itemSchema = new mongoose.Schema(
         availability: {
             availableDays: {
                 type: [String],
-                enum: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+                enum: [
+                    'Monday',
+                    'Tuesday',
+                    'Wednesday',
+                    'Thursday',
+                    'Friday',
+                    'Saturday',
+                    'Sunday',
+                ],
                 default: [],
             },
             timeSlots: [
                 {
                     start: {
                         type: String,
-                        match: [/^([0-1][0-9]|2[0-3]):[0-5][0-9]$/, 'Time must be in HH:MM format'],
+                        match: [
+                            /^([0-1][0-9]|2[0-3]):[0-5][0-9]$/,
+                            'Time must be in HH:MM format',
+                        ],
                     },
                     end: {
                         type: String,
-                        match: [/^([0-1][0-9]|2[0-3]):[0-5][0-9]$/, 'Time must be in HH:MM format'],
+                        match: [
+                            /^([0-1][0-9]|2[0-3]):[0-5][0-9]$/,
+                            'Time must be in HH:MM format',
+                        ],
                     },
                 },
             ],
@@ -63,28 +77,39 @@ const itemSchema = new mongoose.Schema(
 
 itemSchema.pre('validate', function (next) {
     const hasCategory = this.category !== null && this.category !== undefined;
-    const hasSubcategory = this.subcategory !== null && this.subcategory !== undefined;
+    const hasSubcategory =
+        this.subcategory !== null && this.subcategory !== undefined;
 
     if (!hasCategory && !hasSubcategory) {
-        return next(new Error('Item must belong to either a category or subcategory'));
+        return next(
+            new Error('Item must belong to either a category or subcategory'),
+        );
     }
 
     if (hasCategory && hasSubcategory) {
-        return next(new Error('Item cannot belong to both category and subcategory'));
+        return next(
+            new Error('Item cannot belong to both category and subcategory'),
+        );
     }
 
     next();
 });
 
-itemSchema.index({ name: 1, category: 1 }, {
-    unique: true,
-    partialFilterExpression: { category: { $ne: null } },
-});
+itemSchema.index(
+    { name: 1, category: 1 },
+    {
+        unique: true,
+        partialFilterExpression: { category: { $ne: null } },
+    },
+);
 
-itemSchema.index({ name: 1, subcategory: 1 }, {
-    unique: true,
-    partialFilterExpression: { subcategory: { $ne: null } },
-});
+itemSchema.index(
+    { name: 1, subcategory: 1 },
+    {
+        unique: true,
+        partialFilterExpression: { subcategory: { $ne: null } },
+    },
+);
 
 itemSchema.methods.isBookable = function () {
     return (

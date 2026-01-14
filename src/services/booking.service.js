@@ -13,7 +13,15 @@ const formatTime = (minutes) => {
 };
 
 const getDayName = (date) => {
-    const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    const days = [
+        'Sunday',
+        'Monday',
+        'Tuesday',
+        'Wednesday',
+        'Thursday',
+        'Friday',
+        'Saturday',
+    ];
     return days[date.getDay()];
 };
 
@@ -98,7 +106,8 @@ export const getAvailableSlots = async (itemId, date = new Date()) => {
 };
 
 export const bookSlot = async (itemId, bookingData) => {
-    const { startTime, endTime, customerName, customerEmail, customerPhone } = bookingData;
+    const { startTime, endTime, customerName, customerEmail, customerPhone } =
+        bookingData;
 
     const item = await Item.findById(itemId);
     if (!item) {
@@ -121,7 +130,9 @@ export const bookSlot = async (itemId, bookingData) => {
         throw new Error(`Item is not available on ${dayName}`);
     }
 
-    const startTimeString = formatTime(start.getHours() * 60 + start.getMinutes());
+    const startTimeString = formatTime(
+        start.getHours() * 60 + start.getMinutes(),
+    );
     const endTimeString = formatTime(end.getHours() * 60 + end.getMinutes());
 
     const isValidSlot = item.availability.timeSlots.some((slot) => {
@@ -134,7 +145,9 @@ export const bookSlot = async (itemId, bookingData) => {
     });
 
     if (!isValidSlot) {
-        throw new Error('Requested time slot is not within available time slots');
+        throw new Error(
+            'Requested time slot is not within available time slots',
+        );
     }
 
     const overlappingBooking = await Booking.findOne({
@@ -170,7 +183,10 @@ export const bookSlot = async (itemId, bookingData) => {
         status: 'confirmed',
     });
 
-    return await Booking.findById(booking._id).populate('item', 'name description');
+    return await Booking.findById(booking._id).populate(
+        'item',
+        'name description',
+    );
 };
 
 export const getBookingsByItem = async (itemId, filters = {}) => {
@@ -210,7 +226,10 @@ export const cancelBooking = async (bookingId) => {
     booking.status = 'cancelled';
     await booking.save();
 
-    return await Booking.findById(bookingId).populate('item', 'name description');
+    return await Booking.findById(bookingId).populate(
+        'item',
+        'name description',
+    );
 };
 
 export const bookingService = {

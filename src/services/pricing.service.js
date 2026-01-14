@@ -56,8 +56,14 @@ export const calculateDiscountedPrice = (pricing) => {
     if (pricing.basePrice === null || pricing.basePrice === undefined) {
         throw new Error('Base price is required for discounted pricing');
     }
-    if (!pricing.discountType || pricing.discountValue === null || pricing.discountValue === undefined) {
-        throw new Error('Discount type and value are required for discounted pricing');
+    if (
+        !pricing.discountType ||
+        pricing.discountValue === null ||
+        pricing.discountValue === undefined
+    ) {
+        throw new Error(
+            'Discount type and value are required for discounted pricing',
+        );
     }
 
     let discountAmount = 0;
@@ -128,12 +134,19 @@ export const calculateItemBasePrice = (item, params = {}) => {
 
         case 'tiered':
             if (duration === null || duration === undefined) {
-                throw new Error('Duration parameter is required for tiered pricing');
+                throw new Error(
+                    'Duration parameter is required for tiered pricing',
+                );
             }
             const tieredPrice = calculateTieredPrice(pricing, duration);
-            const appliedTier = pricing.tiers.find(
-                (tier) => duration <= tier.max && tier.price === tieredPrice,
-            ) || pricing.tiers.sort((a, b) => a.max - b.max)[pricing.tiers.length - 1];
+            const appliedTier =
+                pricing.tiers.find(
+                    (tier) =>
+                        duration <= tier.max && tier.price === tieredPrice,
+                ) ||
+                pricing.tiers.sort((a, b) => a.max - b.max)[
+                    pricing.tiers.length - 1
+                ];
             return {
                 basePrice: tieredPrice,
                 pricingType: 'tiered',

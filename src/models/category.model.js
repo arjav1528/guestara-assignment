@@ -26,12 +26,16 @@ const categorySchema = new mongoose.Schema(
             max: [100, 'Tax percentage cannot exceed 100'],
             validate: {
                 validator: function (value) {
-                    if (this.tax_applicable && (value === null || value === undefined)) {
+                    if (
+                        this.tax_applicable &&
+                        (value === null || value === undefined)
+                    ) {
                         return false;
                     }
                     return true;
                 },
-                message: 'Tax percentage is required when tax_applicable is true',
+                message:
+                    'Tax percentage is required when tax_applicable is true',
             },
         },
         is_active: {

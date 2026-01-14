@@ -5,8 +5,7 @@ const environment = {
     port: Number(process.env.PORT || 4000),
     host: process.env.HOST || 'localhost',
     clientUrl: process.env.CLIENT_URL || 'http://localhost:3000',
-    mongoUri:
-        process.env.MONGODB_URI || 'mongodb://localhost:27017/guestara',
+    mongoUri: process.env.MONGODB_URI || 'mongodb://localhost:27017/guestara',
     logLevel: process.env.LOG_LEVEL || 'info',
 };
 

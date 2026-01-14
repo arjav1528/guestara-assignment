@@ -59,18 +59,21 @@ export const getItems = async (req, res, next) => {
             .skip(skip)
             .limit(Number(limit));
 
-        // Filter by price range if provided (requires calculating price for each item)
         if (minPrice || maxPrice) {
             items = await Promise.all(
                 items.map(async (item) => {
                     try {
-                        const priceInfo = await pricingService.calculateItemPrice(item._id.toString());
+                        const priceInfo =
+                            await pricingService.calculateItemPrice(
+                                item._id.toString(),
+                            );
                         const basePrice = priceInfo.basePrice || 0;
 
-                        if (minPrice && basePrice < Number(minPrice)) return null;
-                        if (maxPrice && basePrice > Number(maxPrice)) return null;
+                        if (minPrice && basePrice < Number(minPrice))
+                            return null;
+                        if (maxPrice && basePrice > Number(maxPrice))
+                            return null;
 
-                        // Add calculated price to item
                         item._doc.calculatedPrice = basePrice;
                         return item;
                     } catch (err) {
@@ -81,15 +84,18 @@ export const getItems = async (req, res, next) => {
             items = items.filter((item) => item !== null);
         }
 
-        // Filter by tax applicable if provided
         if (taxApplicable !== undefined) {
             const { taxService } = await import('../services/index.js');
             items = await Promise.all(
                 items.map(async (item) => {
                     try {
-                        const taxInfo = await taxService.getItemTaxInfo(item._id.toString());
-                        if (taxApplicable === 'true' && !taxInfo.taxApplicable) return null;
-                        if (taxApplicable === 'false' && taxInfo.taxApplicable) return null;
+                        const taxInfo = await taxService.getItemTaxInfo(
+                            item._id.toString(),
+                        );
+                        if (taxApplicable === 'true' && !taxInfo.taxApplicable)
+                            return null;
+                        if (taxApplicable === 'false' && taxInfo.taxApplicable)
+                            return null;
                         return item;
                     } catch (err) {
                         return null;
@@ -156,11 +162,10 @@ export const getItemPrice = async (req, res, next) => {
 
 export const updateItem = async (req, res, next) => {
     try {
-        const item = await Item.findByIdAndUpdate(
-            req.params.id,
-            req.body,
-            { new: true, runValidators: true },
-        )
+        const item = await Item.findByIdAndUpdate(req.params.id, req.body, {
+            new: true,
+            runValidators: true,
+        })
             .populate('category')
             .populate('subcategory');
         if (!item) {

@@ -50,7 +50,10 @@ export const getAddons = async (req, res, next) => {
 
 export const getAddonById = async (req, res, next) => {
     try {
-        const addon = await Addon.findById(req.params.id).populate('item', 'name description');
+        const addon = await Addon.findById(req.params.id).populate(
+            'item',
+            'name description',
+        );
         if (!addon || !addon.is_active) {
             return res.status(Constants.HTTP_STATUS.NOT_FOUND).json({
                 success: false,
@@ -68,11 +71,10 @@ export const getAddonById = async (req, res, next) => {
 
 export const updateAddon = async (req, res, next) => {
     try {
-        const addon = await Addon.findByIdAndUpdate(
-            req.params.id,
-            req.body,
-            { new: true, runValidators: true },
-        ).populate('item', 'name description');
+        const addon = await Addon.findByIdAndUpdate(req.params.id, req.body, {
+            new: true,
+            runValidators: true,
+        }).populate('item', 'name description');
         if (!addon) {
             return res.status(Constants.HTTP_STATUS.NOT_FOUND).json({
                 success: false,

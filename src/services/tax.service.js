@@ -8,7 +8,8 @@ export const getSubcategoryTaxInfo = async (subcategoryId) => {
     if (typeof subcategoryId === 'object' && subcategoryId._id) {
         subcategory = subcategoryId;
     } else {
-        subcategory = await Subcategory.findById(subcategoryId).populate('category');
+        subcategory =
+            await Subcategory.findById(subcategoryId).populate('category');
     }
 
     if (!subcategory) {
