@@ -8,10 +8,18 @@ import {
 
 const router = Router();
 
-router.post('/', validate(createCategorySchema), categoryController.createCategory);
+router.post(
+    '/',
+    validate(createCategorySchema),
+    categoryController.createCategory,
+);
 router.get('/', categoryController.getCategories);
 router.get('/:id', categoryController.getCategoryById);
-router.patch('/:id', validate(updateCategorySchema), categoryController.updateCategory);
+router.patch(
+    '/:id',
+    validate(updateCategorySchema),
+    categoryController.updateCategory,
+);
 router.delete('/:id', categoryController.deleteCategory);
 
 export default router;

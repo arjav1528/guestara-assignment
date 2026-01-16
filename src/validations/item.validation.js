@@ -5,7 +5,8 @@ const pricingSchema = Joi.object({
         .valid('static', 'tiered', 'complimentary', 'discounted', 'dynamic')
         .required()
         .messages({
-            'any.only': 'Pricing type must be one of: static, tiered, complimentary, discounted, dynamic',
+            'any.only':
+                'Pricing type must be one of: static, tiered, complimentary, discounted, dynamic',
             'any.required': 'Pricing type is required',
         }),
     price: Joi.when('type', {
@@ -100,7 +101,10 @@ export const createItemSchema = Joi.object({
     category: Joi.string().allow(null, ''),
     subcategory: Joi.string().allow(null, ''),
     pricing: pricingSchema.required(),
-    availability: availabilitySchema.default({ availableDays: [], timeSlots: [] }),
+    availability: availabilitySchema.default({
+        availableDays: [],
+        timeSlots: [],
+    }),
 }).xor('category', 'subcategory');
 
 export const updateItemSchema = Joi.object({

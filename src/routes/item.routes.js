@@ -1,6 +1,9 @@
 import { Router } from 'express';
 import * as itemController from '../controllers/item.controller.js';
-import { validate, validateQuery } from '../middlewares/validation.middleware.js';
+import {
+    validate,
+    validateQuery,
+} from '../middlewares/validation.middleware.js';
 import {
     createItemSchema,
     updateItemSchema,

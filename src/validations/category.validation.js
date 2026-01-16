@@ -14,7 +14,8 @@ export const createCategorySchema = Joi.object({
             'number.base': 'Tax percentage must be a number',
             'number.min': 'Tax percentage cannot be negative',
             'number.max': 'Tax percentage cannot exceed 100',
-            'any.required': 'Tax percentage is required when tax_applicable is true',
+            'any.required':
+                'Tax percentage is required when tax_applicable is true',
         }),
         otherwise: Joi.number().min(0).max(100).allow(null),
     }),

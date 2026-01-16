@@ -1,6 +1,9 @@
 import { Router } from 'express';
 import * as bookingController from '../controllers/booking.controller.js';
-import { validate, validateQuery } from '../middlewares/validation.middleware.js';
+import {
+    validate,
+    validateQuery,
+} from '../middlewares/validation.middleware.js';
 import {
     bookSlotSchema,
     getAvailabilitySchema,

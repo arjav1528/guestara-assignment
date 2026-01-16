@@ -3,7 +3,9 @@ import { Constants } from '../config/constants.js';
 
 export const createSubcategory = async (req, res, next) => {
     try {
-        const subcategory = await subcategoryService.createSubcategory(req.body);
+        const subcategory = await subcategoryService.createSubcategory(
+            req.body,
+        );
         res.status(Constants.HTTP_STATUS.CREATED).json({
             success: true,
             data: subcategory,
